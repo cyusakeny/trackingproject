@@ -5,6 +5,7 @@ import com.example.template.enums.EStatus;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,6 +21,9 @@ public class Assets {
     private Location location;
     private Date  date_created;
     private EStatus status;
+    @OneToMany(mappedBy = "assets", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Reviews> reviews;
 
     public Assets() {
     }
