@@ -18,6 +18,7 @@ public class Assets {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     private EAssetType type;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Location location;
     private Date  date_created;
     private EStatus status;
