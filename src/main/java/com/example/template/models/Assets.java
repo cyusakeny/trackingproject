@@ -18,6 +18,7 @@ public class Assets {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     private EAssetType type;
+    private String name;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Location location;
     private Date  date_created;
@@ -26,15 +27,24 @@ public class Assets {
             cascade = CascadeType.ALL)
     private Set<Reviews> reviews;
 
-    public Assets() {
-    }
-
-    public Assets(User user, EAssetType type, Location location, Date date_created, EStatus status) {
+    public Assets(User user,String name ,EAssetType type, Location location, Date date_created, EStatus status) {
         this.user = user;
         this.type = type;
         this.location = location;
         this.date_created = date_created;
         this.status = status;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Assets() {
     }
 
     public User getUser() {
