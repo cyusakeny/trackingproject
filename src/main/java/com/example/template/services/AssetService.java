@@ -21,7 +21,7 @@ public class AssetService {
 @Autowired
     private AssetsRepository repository;
 
-public List<Assets> getAssetById(User user){
+public List<Assets> getAssetByUser(User user){
     return repository.findAssetsByUser(user);
 }
 public List<Assets> getAssetByLocation(Location location){
@@ -48,7 +48,7 @@ Assets asset= repository.findAssetsByUserAndLocationAndName(user, location, upda
 asset.setStatus(updateDto.getStatus());
 return  repository.save(asset);
 };
-public  void DeleteAsset(Assets assets){
-repository.deleteAssetsByUserAndLocationAndName(assets.getUser(), assets.getLocation(), assets.getName());
+public  Assets DeleteAsset(Assets assets){
+return  repository.deleteAssetsByUserAndLocationAndName(assets.getUser(), assets.getLocation(), assets.getName());
 };
 }

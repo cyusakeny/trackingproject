@@ -17,6 +17,16 @@ public class Location {
     private  double Latitude;
     @NotBlank
     private  String LocationName;
+
+    public Location(@NotBlank double longitude, @NotBlank double latitude, @NotBlank String locationName) {
+        Longitude = longitude;
+        Latitude = latitude;
+        LocationName = locationName;
+    }
+
+    public Location() {
+    }
+
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Assets> assets;
