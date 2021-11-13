@@ -1,44 +1,38 @@
 package com.example.template.locating;
 
-import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
-import com.maxmind.geoip2.model.CityResponse;
-import com.maxmind.geoip2.record.City;
-import com.maxmind.geoip2.record.Country;
+import org.json.JSONObject;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 public class GeoLocating {
-    {
-        File database = new File("/home/keny/Desktop/GeoLite2-City_20211109/GeoLite2-City.mmdb");
-        DatabaseReader reader = null;
-        try {
-            reader = new DatabaseReader.Builder(database).build();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private static HttpURLConnection con;
+    public static void main(String[] args) throws IOException {
+        try{
+            String query="http://ipwhois.app/json/197.243.61.202";
+            URL url = new URL(query);
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            StringBuilder content;
+            try(BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream())
+            )){
+                String line;
+                content = new StringBuilder();
+                while ((line = in.readLine()) != null) {
+
+                    content.append(line);
+                    content.append(System.lineSeparator());
+                }
+            }
+            JSONObject obj = new JSONObject(content.toString());
+            String country = obj.getString("country");
+            System.out.println("Country:"+country);
         }
-        InetAddress ipAddress = null;
-        try {
-            ipAddress = InetAddress.getByName("197.243.61.202");
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        finally {
+            con.disconnect();
         }
-        CityResponse response = null;
-        try {
-            response = reader.city(ipAddress);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GeoIp2Exception e) {
-            e.printStackTrace();
-        }
-        assert response != null;
-        Country country = response.getCountry();
-        System.out.println(country.getIsoCode());
-        System.out.println(country.getName());
-        City city = response.getCity();
-        System.out.println(city.getName());
     }
 }
