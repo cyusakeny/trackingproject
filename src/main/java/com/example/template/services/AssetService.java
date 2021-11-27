@@ -15,15 +15,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Service
 public class AssetService {
 @Autowired
     private AssetsRepository repository;
 
-public List<Assets> getAssetByUser(User user){
-    return repository.findAssetsByUser(user);
-}
 public List<Assets> getAssetByLocation(Location location){
     return repository.findByLocation(location);
 }
@@ -36,7 +34,7 @@ public Assets SaveAsset(AssetDto assetData,User user){
 
     assets.setDate_created(new Date());
     assets.setLocation(location);
-    assets.setUser(user);
+    assets.setOwner(user);
     assets.setName(assetData.getName());
     assets.setStatus(assetData.getStatus());
     assets.setType(assetData.getAssetType());
@@ -44,11 +42,16 @@ public Assets SaveAsset(AssetDto assetData,User user){
 }
 public  Assets UpdateAsset(AssetUpdateDto updateDto,User user){
     Location location = new Location();
-Assets asset= repository.findAssetsByUserAndLocationAndName(user, location, updateDto.getName());
+Assets asset= repository.findAssetsByOwnerAndLocationAndName(user, location, updateDto.getName());
 asset.setStatus(updateDto.getStatus());
 return  repository.save(asset);
 };
 public  Assets DeleteAsset(Assets assets){
-return  repository.deleteAssetsByUserAndLocationAndName(assets.getUser(), assets.getLocation(), assets.getName());
+Optional<Assets> FindAsset = repository.findById(assets.getId());
+if (FindAsset.isPresent()){
+    repository.delete(FindAsset.get());
+    return FindAsset.get();
+}
+return null;
 };
 }

@@ -15,7 +15,6 @@ import java.util.UUID;
 public interface AssetsRepository  extends JpaRepository<Assets, UUID> {
     public List<Assets> findByLocation(Location location);
     public List<Assets>findByStatusAndLocation(EStatus status,Location location);
-    public  Assets findAssetsByUserAndLocationAndName(User user,Location location,String name);
-    public List<Assets> findAssetsByUser(User user);
-    public  Assets deleteAssetsByUserAndLocationAndName(User user,Location location,String name);
+    public Assets findAssetsByOwnerAndLocationAndName(User user,Location location,String name);
+    public  Assets findByOwner(User owner);
 }

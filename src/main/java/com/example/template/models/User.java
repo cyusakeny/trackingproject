@@ -32,7 +32,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private EStatus status = EStatus.ACTIVE;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private  Set<Assets> assets;
     @ManyToMany(fetch = FetchType.EAGER)

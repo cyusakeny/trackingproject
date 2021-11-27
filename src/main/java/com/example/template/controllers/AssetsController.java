@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/api/v1/assets")
+@RequestMapping(path = "/api/v1/")
 public class AssetsController {
     @Autowired
     private AssetService assetService;

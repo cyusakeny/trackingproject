@@ -27,7 +27,7 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 
 @RestController
-@RequestMapping(path = "/api/v1/auth")
+@RequestMapping(path = "/api/v1/")
 public class AuthenticationController {
 
     @Autowired
@@ -58,17 +58,13 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(
                         signInRequest.getEmail(),
                         signInRequest.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = null;
-
         try{
             jwt = jwtTokenProvider.generateToken(authentication);
         }catch (Exception e){
             e.printStackTrace();
         }
-
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
@@ -96,7 +92,6 @@ public class AuthenticationController {
 
         user.setRoles(Collections.singleton(userRole));
         userRepository.save(user);
-
         return new ResponseEntity<>(new Response("Registered successfully", ZonedDateTime.now(), true), HttpStatus.CREATED);
     }
 }

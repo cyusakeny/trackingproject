@@ -12,11 +12,9 @@ import java.util.UUID;
 @Table(name = "assets")
 public class Assets {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User owner;
     private EAssetType type;
     private String name;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -27,8 +25,8 @@ public class Assets {
             cascade = CascadeType.ALL)
     private Set<Reviews> reviews;
 
-    public Assets(User user,String name ,EAssetType type, Location location, Date date_created, EStatus status) {
-        this.user = user;
+    public Assets(User owner,String name ,EAssetType type, Location location, Date date_created, EStatus status) {
+        this.owner = owner;
         this.type = type;
         this.location = location;
         this.date_created = date_created;
@@ -45,14 +43,6 @@ public class Assets {
     }
 
     public Assets() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public EAssetType getType() {
@@ -85,5 +75,29 @@ public class Assets {
 
     public void setStatus(EStatus status) {
         this.status = status;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Set<Reviews> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Reviews> reviews) {
+        this.reviews = reviews;
     }
 }

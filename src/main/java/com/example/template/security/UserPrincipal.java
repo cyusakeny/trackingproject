@@ -19,14 +19,12 @@ import java.util.stream.Collectors;
 @Setter
 public class UserPrincipal implements UserDetails {
     private UUID id;
-
     @JsonIgnore
     private String email;
     private String firstName;
     private String lastName;
     @JsonIgnore
     private String mobile;
-
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
