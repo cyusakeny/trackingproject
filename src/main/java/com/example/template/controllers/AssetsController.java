@@ -20,7 +20,8 @@ public class AssetsController {
     private UserService userService;
     @PostMapping(path = "/addassets")
     public ResponseEntity<ApiResponse> SaveAsset(@RequestBody AssetDto assetDto){
-        return ResponseEntity.ok(new ApiResponse(true,"Asset Added",assetService.SaveAsset(assetDto,userService.getLoggedInUser())));
+        Location location = new Location(98.4,87.5,"Kigali");
+        return ResponseEntity.ok(new ApiResponse(true,"Asset Added",assetService.SaveAsset(assetDto,userService.getLoggedInUser(),location)));
     }
     @GetMapping(path = "/getassetsbylocation/{latitude}/{longitude}/{name}")
     public  ResponseEntity<ApiResponse> GetAssetsByLocation(@PathVariable("latitude") double latitude,@PathVariable("longitude") double longitude,@PathVariable("name")String name){

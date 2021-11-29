@@ -2,8 +2,8 @@ package com.example.template.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "locations")
@@ -11,17 +11,17 @@ public class Location {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
+    @NotNull
+    private  double longitude;
+    @NotNull
+    private  double latitude;
     @NotBlank
-    private  double Longitude;
-    @NotBlank
-    private  double Latitude;
-    @NotBlank
-    private  String LocationName;
+    private  String locationName;
 
-    public Location(@NotBlank double longitude, @NotBlank double latitude, @NotBlank String locationName) {
-        Longitude = longitude;
-        Latitude = latitude;
-        LocationName = locationName;
+    public Location(@NotNull double longitude, @NotNull double latitude, @NotBlank String locationName) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.locationName = locationName;
     }
 
     public Location() {
@@ -40,27 +40,27 @@ public class Location {
     }
 
     public double getLongitude() {
-        return Longitude;
+        return longitude;
     }
 
     public void setLongitude(double longitude) {
-        Longitude = longitude;
+       this.longitude= longitude;
     }
 
     public double getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
     public void setLatitude(double latitude) {
-        Latitude = latitude;
+        this.latitude = latitude;
     }
 
     public String getLocationName() {
-        return LocationName;
+        return locationName;
     }
 
     public void setLocationName(String locationName) {
-        LocationName = locationName;
+        this.locationName = locationName;
     }
 
     public Set<Assets> getAssets() {
