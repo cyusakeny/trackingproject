@@ -17,8 +17,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     UserRepository userRepository;
 
     @Transactional
-    public UserDetails loadByUserId(UUID id){
-        User user = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found with id: "+id));
+    public UserDetails loadByUserId(int id){
+        System.out.println(id);
+          User user = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found with id: "+id));
         return UserPrincipal.create(user);
     }
 

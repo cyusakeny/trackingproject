@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Location {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private UUID id;
+    private int id;
     @NotBlank
     private  double Longitude;
     @NotBlank
@@ -30,4 +30,44 @@ public class Location {
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Assets> assets;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public String getLocationName() {
+        return LocationName;
+    }
+
+    public void setLocationName(String locationName) {
+        LocationName = locationName;
+    }
+
+    public Set<Assets> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(Set<Assets> assets) {
+        this.assets = assets;
+    }
 }

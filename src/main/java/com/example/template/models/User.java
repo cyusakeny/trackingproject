@@ -21,7 +21,7 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private int id;
 
     private String email;
     private String firstName;
@@ -36,7 +36,7 @@ public class User {
             cascade = CascadeType.ALL)
     private  Set<Assets> assets;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role",joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
 

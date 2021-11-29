@@ -30,11 +30,11 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public User getUser(UUID userID) {
+    public User getUser(int userID) {
         return this.userRepository.findById(userID).orElseThrow(()-> new ApiRequestException("User with id "+userID+" not found"));
     }
 
-    public User deleteUser(UUID userID) {
+    public User deleteUser(int userID) {
         User user = userRepository.findById(userID).orElseThrow(() -> new AppException("user with id "+userID+ " not found"));
         this.userRepository.deleteById(userID);
         return user;
@@ -52,18 +52,20 @@ public class UserService {
     public User getLoggedInUser(){
         String email;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if(principal instanceof UserDetails){
             email = ((UserDetails) principal).getUsername();
-        }else{
-            email = principal.toString();
+            System.out.println("Instance email: "+email);
         }
-        User findByEmail = userRepository.findByEmail(email).orElseThrow(() -> new ApiRequestException("User not found"));
 
-        return findByEmail;
+        else{
+            email = principal.toString();
+            System.out.println("ToString email: "+email);
+        }
+
+        return userRepository.findByEmail(email).orElseThrow(() -> new ApiRequestException("User not found"));
     }
 
-    public User updateUser(UUID userID, UserUpdateDTO userdataRequest) {
+    public User updateUser(int userID, UserUpdateDTO userdataRequest) {
         User user = userRepository.findById(userID).orElseThrow(()-> new ResourceNotFoundException("Get user by id", ""+ userID,new User()));
 
         if(getLoggedInUser().getId() != user.getId())

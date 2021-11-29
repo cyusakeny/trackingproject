@@ -12,7 +12,7 @@ import java.util.UUID;
 @Table(name = "assets")
 public class Assets {
     @Id
-    private UUID id;
+    private int id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User owner;
     private EAssetType type;
@@ -77,11 +77,11 @@ public class Assets {
         this.status = status;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

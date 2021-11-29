@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{userID}")
-    public ResponseEntity<ApiResponse> deleteUser(@ApiParam(value="delete user",required = true) @PathVariable("userID") UUID userID){
+    public ResponseEntity<ApiResponse> deleteUser(@ApiParam(value="delete user",required = true) @PathVariable("userID") int userID){
         return ResponseEntity.ok(new ApiResponse(true,"user removed successfully",userService.deleteUser(userID)));
     }
 
     @PutMapping(path = "/{userID}")
-    public ResponseEntity<ApiResponse> updateUser(@PathVariable("userID") UUID userID,@Valid @RequestBody UserUpdateDTO userdataRequest){
+    public ResponseEntity<ApiResponse> updateUser(@PathVariable("userID") int userID,@Valid @RequestBody UserUpdateDTO userdataRequest){
 
         userService.updateUser(userID,userdataRequest);
 
@@ -47,7 +47,7 @@ public class UserController {
 
 
     @GetMapping(path = "/{userID}")
-    public ResponseEntity<ApiResponse> getUser(@ApiParam(value="Get user by id",required = true) @PathVariable("userID") UUID userID){
+    public ResponseEntity<ApiResponse> getUser(@ApiParam(value="Get user by id",required = true) @PathVariable("userID") int userID){
         return  ResponseEntity.ok(new ApiResponse(true,"user found",this.userService.getUser(userID)));
     }
 
