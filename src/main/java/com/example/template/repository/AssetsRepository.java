@@ -11,5 +11,5 @@ public interface AssetsRepository  extends JpaRepository<Assets, Integer> {
     public List<Assets> findByLocation(Location location);
     public List<Assets>findByStatusAndLocation(EStatus status,Location location);
     public Assets findAssetsByOwnerAndLocationAndName(User user,Location location,String name);
-    public  Assets findByOwner(User owner);
+    public List<Assets>findByOwner(User owner);
 }

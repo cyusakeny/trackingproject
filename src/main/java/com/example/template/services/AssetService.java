@@ -8,6 +8,7 @@ import com.example.template.models.Location;
 import com.example.template.models.User;
 import com.example.template.repository.AssetsRepository;
 import com.example.template.repository.LocationRepository;
+import com.example.template.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,8 @@ public class AssetService {
     private AssetsRepository repository;
 @Autowired
   private LocationRepository locationRepository;
+@Autowired
+ private UserRepository userRepository;
 
 public List<Assets> getAssetByLocation(Location location){
 Optional<Location> location1 = locationRepository.findByLatitudeAndAndLongitudeAndLocationName(location.getLatitude(), location.getLongitude(), location.getLocationName());
@@ -50,17 +53,26 @@ public Assets SaveAsset(AssetDto assetData,User user,Location location){
     assets.setType(assetData.getAssetType());
     return  repository.save(assets);
 }
-public  Assets UpdateAsset(AssetUpdateDto updateDto,User user,Location location){
-Assets asset= repository.findAssetsByOwnerAndLocationAndName(user, location, updateDto.getName());
-asset.setStatus(updateDto.getStatus());
-return  repository.save(asset);
+public  Assets UpdateAsset(AssetUpdateDto updateDto,int id){
+Optional <Assets> asset= repository.findById(id);
+if (asset.isPresent()){
+    asset.get().setStatus(updateDto.getStatus());
+    asset.get().setName(updateDto.getName());
+    return  repository.save(asset.get());
+}
+return null;
 };
-public  Assets DeleteAsset(Assets assets){
-Optional<Assets> FindAsset = repository.findById(assets.getId());
+public  Assets DeleteAsset(int id){
+    System.out.println("The asset Id:"+id);
+Optional<Assets> FindAsset = repository.findById(id);
 if (FindAsset.isPresent()){
     repository.delete(FindAsset.get());
     return FindAsset.get();
 }
 return null;
 };
+public  List<Assets> MyAssets(int id){
+    Optional<User> Owner = userRepository.findById(id);
+    return Owner.map(user -> repository.findByOwner(user)).orElse(null);
+}
 }
