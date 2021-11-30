@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -42,7 +41,6 @@ public class User {
 
     @JsonIgnore
     private String password;
-
 
     public User(String email, String firstName, String lastName, String mobile, EGender gender, String password) {
         this.email = email;

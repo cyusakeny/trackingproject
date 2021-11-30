@@ -2,6 +2,7 @@ package com.example.template.models;
 
 import com.example.template.enums.EAssetType;
 import com.example.template.enums.EStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,16 +12,20 @@ import java.util.UUID;
 @Entity
 @Table(name = "assets")
 public class Assets {
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private int id;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User owner;
     private EAssetType type;
     private String name;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Location location;
     private Date  date_created;
     private EStatus status;
+    @JsonIgnore
     @OneToMany(mappedBy = "assets", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Reviews> reviews;
