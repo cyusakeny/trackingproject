@@ -35,21 +35,16 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime()+jwtExpirationInMs);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
-        for (GrantedAuthority role :userPrincipal.getAuthorities()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getAuthority()));
-        }
-
         User authUser = userRepository.findById(userPrincipal.getId()).get();
 
 
         String token = Jwts .builder() .setId(authUser.getId()+"")
                 .setSubject(userPrincipal.getId()+"")
-                .claim("authorities",grantedAuthorities)
                 .claim("user",authUser)
                 .setIssuedAt(new
                         Date(System.currentTimeMillis())) .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+
         return  token;
     }
 

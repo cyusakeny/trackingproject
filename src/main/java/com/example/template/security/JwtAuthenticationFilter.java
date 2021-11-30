@@ -32,7 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(httpServletRequest);
             if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
                 String userID = tokenProvider.getUserIdFromToken(jwt);
-                UserDetails userDetails = customUserDetailsService.loadByUserId(UUID.fromString(userID));
+                System.out.println("The found userId: "+userID);
+                UserDetails userDetails = customUserDetailsService.loadByUserId(Integer.parseInt(userID));
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -44,6 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
+
+
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

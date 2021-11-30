@@ -3,52 +3,76 @@ package com.example.template.services;
 import com.example.template.dtos.AssetDto;
 import com.example.template.dtos.AssetUpdateDto;
 import com.example.template.enums.EStatus;
-import com.example.template.exceptions.ApiRequestException;
 import com.example.template.models.Assets;
 import com.example.template.models.Location;
 import com.example.template.models.User;
 import com.example.template.repository.AssetsRepository;
-import com.example.template.repository.RoleRepository;
+import com.example.template.repository.LocationRepository;
 import com.example.template.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 @Service
 public class AssetService {
 @Autowired
     private AssetsRepository repository;
+@Autowired
+  private LocationRepository locationRepository;
+@Autowired
+ private UserRepository userRepository;
 
-public List<Assets> getAssetByUser(User user){
-    return repository.findAssetsByUser(user);
-}
 public List<Assets> getAssetByLocation(Location location){
-    return repository.findByLocation(location);
+Optional<Location> location1 = locationRepository.findByLatitudeAndAndLongitudeAndLocationName(location.getLatitude(), location.getLongitude(), location.getLocationName());
+    return location1.map(value -> repository.findByLocation(value)).orElse(null);
 }
 public  List<Assets> getAssetByLocationAndStatus(EStatus status,Location location){
-    return repository.findByStatusAndLocation(status,location);
+    Optional<Location> location1 = locationRepository.findByLatitudeAndAndLongitudeAndLocationName(location.getLatitude(), location.getLongitude(), location.getLocationName());
+    return location1.map(value -> repository.findByStatusAndLocation(status, value)).orElse(null);
 }
-public Assets SaveAsset(AssetDto assetData,User user){
+public Assets SaveAsset(AssetDto assetData,User user,Location location){
+    Optional<Location> location1 = locationRepository.findByLatitudeAndAndLongitudeAndLocationName(location.getLatitude(), location.getLongitude(), location.getLocationName());
     Assets assets = new Assets();
-    Location location = new Location();
+    if (location1.isEmpty()){
+        System.out.println("Location  not found");
+      locationRepository.save(location);
+        assets.setLocation(location);
+    }
+    else {
+        assets.setLocation(location1.get());
+    }
+    System.out.println("Location found");
 
     assets.setDate_created(new Date());
-    assets.setLocation(location);
-    assets.setUser(user);
+
+    assets.setOwner(user);
     assets.setName(assetData.getName());
     assets.setStatus(assetData.getStatus());
     assets.setType(assetData.getAssetType());
     return  repository.save(assets);
 }
-public  Assets UpdateAsset(AssetUpdateDto updateDto,User user){
-    Location location = new Location();
-Assets asset= repository.findAssetsByUserAndLocationAndName(user, location, updateDto.getName());
-asset.setStatus(updateDto.getStatus());
-return  repository.save(asset);
+public  Assets UpdateAsset(AssetUpdateDto updateDto,int id){
+Optional <Assets> asset= repository.findById(id);
+if (asset.isPresent()){
+    asset.get().setStatus(updateDto.getStatus());
+    asset.get().setName(updateDto.getName());
+    return  repository.save(asset.get());
+}
+return null;
 };
-public  Assets DeleteAsset(Assets assets){
-return  repository.deleteAssetsByUserAndLocationAndName(assets.getUser(), assets.getLocation(), assets.getName());
+public  Assets DeleteAsset(int id){
+    System.out.println("The asset Id:"+id);
+Optional<Assets> FindAsset = repository.findById(id);
+if (FindAsset.isPresent()){
+    repository.delete(FindAsset.get());
+    return FindAsset.get();
+}
+return null;
 };
+public  List<Assets> MyAssets(int id){
+    Optional<User> Owner = userRepository.findById(id);
+    return Owner.map(user -> repository.findByOwner(user)).orElse(null);
+}
 }

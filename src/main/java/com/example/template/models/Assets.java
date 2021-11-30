@@ -2,6 +2,7 @@ package com.example.template.models;
 
 import com.example.template.enums.EAssetType;
 import com.example.template.enums.EStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,24 +12,26 @@ import java.util.UUID;
 @Entity
 @Table(name = "assets")
 public class Assets {
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private int id;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User owner;
     private EAssetType type;
     private String name;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Location location;
     private Date  date_created;
     private EStatus status;
+    @JsonIgnore
     @OneToMany(mappedBy = "assets", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Reviews> reviews;
 
-    public Assets(User user,String name ,EAssetType type, Location location, Date date_created, EStatus status) {
-        this.user = user;
+    public Assets(User owner,String name ,EAssetType type, Location location, Date date_created, EStatus status) {
+        this.owner = owner;
         this.type = type;
         this.location = location;
         this.date_created = date_created;
@@ -45,14 +48,6 @@ public class Assets {
     }
 
     public Assets() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public EAssetType getType() {
@@ -85,5 +80,29 @@ public class Assets {
 
     public void setStatus(EStatus status) {
         this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Set<Reviews> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Reviews> reviews) {
+        this.reviews = reviews;
     }
 }
