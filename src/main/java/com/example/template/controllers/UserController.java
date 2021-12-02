@@ -1,6 +1,7 @@
 package com.example.template.controllers;
 
 import com.example.template.dtos.UserUpdateDTO;
+import com.example.template.enums.EStatus;
 import com.example.template.models.User;
 import com.example.template.payload.ApiResponse;
 import com.example.template.services.UserService;
@@ -50,6 +51,9 @@ public class UserController {
     public ResponseEntity<ApiResponse> getUser(@ApiParam(value="Get user by id",required = true) @PathVariable("userID") int userID){
         return  ResponseEntity.ok(new ApiResponse(true,"user found",this.userService.getUser(userID)));
     }
-
+@GetMapping(path = "/{status}")
+public ResponseEntity<ApiResponse> getUserByStatus(@ApiParam(value="Get users by Status",required = true) @PathVariable("status") EStatus status){
+    return  ResponseEntity.ok(new ApiResponse(true,"user found",this.userService.GetUsersByStatus(status)));
+}
 
 }
