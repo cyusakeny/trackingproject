@@ -3,14 +3,12 @@ package com.example.template.controllers;
 import com.example.template.dtos.AssetDto;
 import com.example.template.dtos.AssetUpdateDto;
 import com.example.template.enums.EStatus;
-import com.example.template.models.Assets;
 import com.example.template.models.Location;
 import com.example.template.payload.ApiResponse;
 import com.example.template.services.AssetService;
 import com.example.template.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

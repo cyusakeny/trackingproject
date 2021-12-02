@@ -12,6 +12,18 @@ public class Reviews {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "asset_id", nullable = false)
     private  Assets assets;
+    private  String review;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sent_id", nullable = false)
+    private User sentBy;
+
+    public User getSentBy() {
+        return sentBy;
+    }
+
+    public void setSentBy(User sentBy) {
+        this.sentBy = sentBy;
+    }
 
     public int getId() {
         return id;
@@ -37,6 +49,7 @@ public class Reviews {
         this.review = review;
     }
 
-    private  String review;
+    public Reviews() {
+    }
 
 }

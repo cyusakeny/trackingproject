@@ -102,7 +102,7 @@ public class Assets {
         return reviews;
     }
 
-    public void setReviews(Set<Reviews> reviews) {
-        this.reviews = reviews;
+    public void setReviews(Reviews reviews) {
+        this.reviews.add(reviews) ;
     }
 }

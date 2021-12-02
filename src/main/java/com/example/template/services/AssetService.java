@@ -5,6 +5,7 @@ import com.example.template.dtos.AssetUpdateDto;
 import com.example.template.enums.EStatus;
 import com.example.template.models.Assets;
 import com.example.template.models.Location;
+import com.example.template.models.Reviews;
 import com.example.template.models.User;
 import com.example.template.repository.AssetsRepository;
 import com.example.template.repository.LocationRepository;
@@ -74,5 +75,13 @@ return null;
 public  List<Assets> MyAssets(int id){
     Optional<User> Owner = userRepository.findById(id);
     return Owner.map(user -> repository.findByOwner(user)).orElse(null);
+}
+public Assets AddReview(int id , Reviews reviews){
+    Optional<Assets> asset = repository.findById(id);
+    if (asset.isPresent()){
+        asset.get().setReviews(reviews);
+        return repository.save(asset.get());
+    }
+    return null;
 }
 }

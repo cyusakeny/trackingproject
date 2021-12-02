@@ -1,6 +1,7 @@
 package com.example.template.services;
 
 import com.example.template.dtos.UserUpdateDTO;
+import com.example.template.enums.EStatus;
 import com.example.template.exceptions.ApiRequestException;
 import com.example.template.exceptions.AppException;
 import com.example.template.exceptions.ResourceNotFoundException;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -46,9 +48,6 @@ public class UserService {
         Page<User> users = userRepository.findAll(pageable);
         return users;
     }
-
-
-
     public User getLoggedInUser(){
         String email;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -87,5 +86,8 @@ public class UserService {
         userRepository.save(user);
 
         return user;
+    }
+    public List<User> GetUsersByStatus(EStatus status){
+        return  userRepository.findByStatus(status);
     }
 }
